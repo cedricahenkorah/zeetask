@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const corsOptions = require("./config/corsOptions");
+const connectDB = require("./config/dbConnection");
 
 const port = process.env.PORT || 5000;
 
@@ -14,6 +15,7 @@ const app = express();
 console.log(process.env.NODE_ENV);
 
 // connect to mongodb
+connectDB();
 
 // middlewares
 app.use(cors(corsOptions));
