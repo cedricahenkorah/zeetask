@@ -19,6 +19,10 @@ const teamSchema = new Schema(
         ref: "User",
       },
     ],
+    subscription: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
