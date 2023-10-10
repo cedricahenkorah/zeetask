@@ -1,5 +1,12 @@
 const express = require("express");
 const verifyJWT = require("../middleware/verifyJWT");
+const {
+  getAllTasks,
+  getTask,
+  createTask,
+  updateTask,
+  deleteTask,
+} = require("../controllers/taskController");
 
 const router = express.Router();
 
@@ -7,18 +14,18 @@ const router = express.Router();
 router.use(verifyJWT);
 
 // get all tasks
-router.get("/");
+router.get("/", getAllTasks);
 
 // get a single task
-router.get("/:id");
+router.get("/:id", getTask);
 
 // create a task
-router.post("/");
+router.post("/", createTask);
 
 // update a task
-router.patch("/:id");
+router.patch("/:id", updateTask);
 
 // delete a task
-router.delete("/:id");
+router.delete("/:id", deleteTask);
 
 module.exports = router;

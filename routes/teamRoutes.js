@@ -1,5 +1,12 @@
 const express = require("express");
 const verifyJWT = require("../middleware/verifyJWT");
+const {
+  getAllTeams,
+  getTeam,
+  createTeam,
+  updateTeam,
+  deleteTeam,
+} = require("../controllers/teamController");
 
 const router = express.Router();
 
@@ -7,18 +14,18 @@ const router = express.Router();
 router.use(verifyJWT);
 
 // get all teams
-router.get("/");
+router.get("/", getAllTeams);
 
 // get a single team
-router.get("/:id");
+router.get("/:id", getTeam);
 
 // create a team
-router.post("/");
+router.post("/", createTeam);
 
 // update a team
-router.patch("/:id");
+router.patch("/:id", updateTeam);
 
 // delete a team
-router.delete("/:id");
+router.delete("/:id", deleteTeam);
 
 module.exports = router;
