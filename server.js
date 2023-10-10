@@ -9,6 +9,8 @@ const corsOptions = require("./config/corsOptions");
 const connectDB = require("./config/dbConnection");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
+const teamRoutes = require("./routes/teamRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 const port = process.env.PORT || 5000;
 
@@ -26,9 +28,9 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 // routes
-app.use("/api/team");
+app.use("/api/team", teamRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/tasks");
+app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 app.use((req, res) => {
   res.status(404).json({ message: "Sorry, this route does not exist" });
