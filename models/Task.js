@@ -31,7 +31,7 @@ const taskSchema = new Schema(
       required: false,
     },
     completed: {
-      type: String,
+      type: Boolean,
       default: false,
     },
   },
