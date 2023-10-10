@@ -11,12 +11,16 @@ const {
   resetPassword,
   updateIsAdmin,
   updateStatus,
+  createAdmin,
 } = require("../controllers/usersControllers");
 
 const router = express.Router();
 
+// create an admin user
+router.post("/create-admin", createAdmin);
+
 // verify jwt
-// router.use(verifyJWT);
+router.use(verifyJWT);
 
 // get all users
 router.get("/", getAllUsers);

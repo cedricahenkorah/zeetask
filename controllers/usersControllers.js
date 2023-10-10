@@ -41,6 +41,62 @@ const getUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+const createAdmin = async (req, res) => {
+  const { firstName, lastName, email, password, username } = req.body;
+
+  // check if all fields exist
+  if (!firstName || !lastName || !email || !password || !username) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // validate email and password fields
+  if (!validator.isEmail(email)) {
+    throw new Error("Invalid email");
+  }
+
+  if (!validator.isStrongPassword(password)) {
+    throw new Error(
+      "Password is not strong enough, must be at least 8 characters long, include at least one upppercase letter, one lowercase letter, one number and one special character (e.g., !, @, #, $, etc.)"
+    );
+  }
+
+  // check if email and username already exists
+  const emailExists = await User.findOne({ email }).lean().exec();
+
+  if (emailExists) {
+    return res.status(409).json({ message: "Email already exists" });
+  }
+
+  const usernameExists = await User.findOne({ username }).lean().exec();
+
+  if (usernameExists) {
+    return res.status(409).json({ message: "Username already exists" });
+  }
+
+  // generate salt and hash password
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  // create new admin user in the db
+  const admin = await User.create({
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+    username,
+    isAdmin: true,
+  });
+
+  if (admin) {
+    res.status(201).json({ message: "Admin created succesfully" });
+  } else {
+    res.status(400).json({
+      message:
+        "Invalid admin user data received, could not create the new admin user",
+    });
+  }
+};
+
 // @desc create a new user
 // @route POST /users/
 // @access Private
@@ -366,4 +422,5 @@ module.exports = {
   resetPasswordRequest,
   resetPassword,
   changePassword,
+  createAdmin,
 };

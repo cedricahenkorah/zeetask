@@ -6,7 +6,6 @@ const userSChema = new Schema({
   team: {
     type: Schema.Types.ObjectId,
     ref: "Team",
-    required: true,
   },
   firstName: {
     type: String,
