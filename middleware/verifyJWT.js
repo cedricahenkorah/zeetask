@@ -15,8 +15,9 @@ const verifyJWT = (req, res, next) => {
 
   // verify the token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.UserInfo.username;
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    req.user = decoded.userInfo.username;
+    req.email = decoded.userInfo.email;
 
     next();
   } catch (err) {

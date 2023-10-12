@@ -4,9 +4,11 @@ const Task = require("../models/Task");
 const Token = require("../models/Token");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const validator = require("validator");
 const accountCreatedMail = require("../services/AccountCreatedMail");
 const generateResetToken = require("../services/generateResetToken");
 const PasswordResetMail = require("../services/PasswordResetMail");
+const { login } = require("../controllers/authController");
 
 // @desc get all users
 // @route GET /users/
@@ -88,7 +90,41 @@ const createAdmin = async (req, res) => {
   });
 
   if (admin) {
-    res.status(201).json({ message: "Admin created succesfully" });
+    // login
+    // create new access token
+    const accessToken = jwt.sign(
+      {
+        userInfo: {
+          username: username,
+          email: email,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1hr" }
+    );
+
+    // create refresh token
+    const refreshToken = jwt.sign(
+      { username: username },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "3d" }
+    );
+
+    // create secure cookie with refresh token
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+
+    res
+      .status(201)
+      .json({
+        message: "Admin created succesfully and logged in",
+        admin,
+        accessToken,
+      });
   } else {
     res.status(400).json({
       message:

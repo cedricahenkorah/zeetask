@@ -11,7 +11,7 @@ const login = async (req, res) => {
   }
 
   // check if user exists
-  const foundUser = await User.findOne({ usernname }).exec();
+  const foundUser = await User.findOne({ username }).exec();
 
   if (!foundUser || !foundUser.status) {
     return res.status(401).json({ message: "Unauthorized" });
