@@ -11,6 +11,7 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const taskRoutes = require("./routes/taskRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const port = process.env.PORT || 5000;
 
@@ -32,6 +33,7 @@ app.use("/api/team", teamRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/payments", paymentRoutes);
 app.use((req, res) => {
   res.status(404).json({ message: "Sorry, this route does not exist" });
 });
