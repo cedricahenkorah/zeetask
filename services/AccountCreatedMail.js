@@ -33,7 +33,7 @@ const AccountCreatedMail = (
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,
-    subject: `Welcome to ${teamName}!`,
+    subject: "Welcome to",
     html: mailContent(firstName, userName, email),
   };
 
