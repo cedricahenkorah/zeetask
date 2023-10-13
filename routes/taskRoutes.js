@@ -11,7 +11,7 @@ const {
 const router = express.Router();
 
 // verify jwt
-router.use(verifyJWT);
+// router.use(verifyJWT);
 
 // get all tasks
 router.get("/", getAllTasks);

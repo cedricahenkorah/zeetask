@@ -1,27 +1,26 @@
 const nodemailer = require("nodemailer");
 
-const mailContent = (firstName, teamName, userName, email, adminFirstName) => `
+const mailContent = (firstName, userName, email) => `
 <p>Hello ${firstName},</p>
-<p>Welcome to ${teamName}! Your account is all set up.</p>
 
-<p>Visit [website] and log in using: </p>
+
+<p>Visit [website] and log in using: http://localhost:3000</p>
 
 <p>Username: ${userName} </p>
 <p>Email: ${email} </p>
-<p>Password: Test123. </p>
+
 
 <p>Feel free to reach out if you need help. We're excited to have you on board! </p>
 
 <p>Best regards,</p>
-<p>${adminFirstName}</p>
+
 `;
 
 const AccountCreatedMail = (
   firstName,
-  teamName,
+
   userName,
-  email,
-  adminFirstName
+  email
 ) => {
   const transporter = nodemailer.createTransport({
     service: "hotmail",
@@ -35,7 +34,7 @@ const AccountCreatedMail = (
     from: process.env.EMAIL,
     to: email,
     subject: `Welcome to ${teamName}!`,
-    html: mailContent(firstName, teamName, userName, email, adminFirstName),
+    html: mailContent(firstName, userName, email),
   };
 
   transporter.sendMail(mailOptions, (err, info) => {

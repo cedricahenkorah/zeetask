@@ -119,6 +119,9 @@ const createAdmin = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
+    // send mail confirming account creation
+    accountCreatedMail(firstName, email, username);
+
     res.status(201).json({
       message: "Admin created succesfully and logged in",
       admin,

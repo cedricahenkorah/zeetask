@@ -20,7 +20,7 @@ const router = express.Router();
 router.post("/create-admin", createAdmin);
 
 // verify jwt
-router.use(verifyJWT);
+// router.use(verifyJWT);
 
 // get all users
 router.get("/", getAllUsers);
