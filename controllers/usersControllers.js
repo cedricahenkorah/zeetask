@@ -9,6 +9,7 @@ const accountCreatedMail = require("../services/AccountCreatedMail");
 const generateResetToken = require("../services/generateResetToken");
 const PasswordResetMail = require("../services/PasswordResetMail");
 const { login } = require("../controllers/authController");
+const jwt = require("jsonwebtoken");
 
 // @desc get all users
 // @route GET /users/
@@ -118,13 +119,11 @@ const createAdmin = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
 
-    res
-      .status(201)
-      .json({
-        message: "Admin created succesfully and logged in",
-        admin,
-        accessToken,
-      });
+    res.status(201).json({
+      message: "Admin created succesfully and logged in",
+      admin,
+      accessToken,
+    });
   } else {
     res.status(400).json({
       message:

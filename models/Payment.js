@@ -4,17 +4,13 @@ const Schema = mongoose.Schema;
 
 const paymentSchema = new Schema(
   {
-    status: {
-      type: Boolean,
-      required: true,
-    },
     amount: {
       type: String,
       required: true,
     },
-    userId: {
+    teamId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Team",
     },
     customerName: {
       type: String,
@@ -32,11 +28,15 @@ const paymentSchema = new Schema(
       type: String,
       required: false,
     },
-    reference: {
-      type: String,
-      required: true,
-    },
     callback_url: {
+      type: String,
+      required: false,
+    },
+    paymentStatus: {
+      type: String,
+      default: "created",
+    },
+    zeepay_id: {
       type: String,
       required: false,
     },
@@ -44,4 +44,4 @@ const paymentSchema = new Schema(
   { timestamps: true }
 );
 
-modules.export = mongoose.model("Payment", paymentSchema);
+module.exports = mongoose.model("Payment", paymentSchema);

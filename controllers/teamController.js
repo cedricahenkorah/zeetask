@@ -40,10 +40,10 @@ const getTeam = async (req, res) => {
 };
 
 const createTeam = async (req, res) => {
-  const { name, admin, subscription } = req.body;
+  const { name, admin } = req.body;
 
   // check if all the fields are provided
-  if (!name || !admin || typeof subscription !== "boolean") {
+  if (!name || !admin) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -67,7 +67,7 @@ const createTeam = async (req, res) => {
 
   // create the team
   try {
-    const team = await Team.create({ name, admin, subscription });
+    const team = await Team.create({ name, admin });
 
     // Update the admin user's team field
     adminUser.team = team._id;
