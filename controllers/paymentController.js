@@ -55,7 +55,9 @@ const debitMobileWallet = async (req, res) => {
     if (response.code === 400) {
       return res.status(400).json({ message: response.message, response });
     } else {
-      res.status(200).json({ message: "Payment was successful", response });
+      res
+        .status(200)
+        .json({ message: "Payment is pending, hold on...", response });
     }
   } catch (error) {
     console.log(error);
@@ -72,17 +74,25 @@ const callback = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // check if the zeepay id (payment id) exists
-  const payment = await Payment.findOne({ zeepay_id });
+  try {
+    // check if the zeepay id (payment id) exists
+    const payment = await Payment.findOne({ zeepay_id });
 
-  if (!payment) {
-    return res.status(404).json({ message: "Payment not found" });
-  }
+    if (!payment) {
+      return res.status(404).json({ message: "Payment not found" });
+    }
 
-  // check the status of the payment and update the payment status in the database
-  if (status === "success" && code === 200) {
-    // if payment is successful
-    payment.status = "success";
+    // Log the payment data
+    console.log("Found payment: ", payment);
+
+    // check the status of the payment and update the payment status in the database
+    if (status === "success" && code === 200) {
+      // if payment is successful
+      payment.paymentStatus = "success";
+    } else if (status === "failed") {
+      // if payment failed
+      payment.paymentStatus = "failed";
+    }
 
     // update the payment status in the database
     const updatedPayment = await payment.save();
@@ -98,21 +108,9 @@ const callback = async (req, res) => {
     } else {
       return res.status(400).json({ message: "Payment not updated" });
     }
-  } else if (status === "failed") {
-    // if payment failed
-    payment.status = "failed";
-
-    // update the payment status in the database
-    const updatedPayment = await payment.save();
-    console.log("updated payment", updatedPayment);
-
-    if (updatedPayment) {
-      res
-        .status(200)
-        .json({ message: "Payment updated successfully", updatedPayment });
-    } else {
-      return res.status(400).json({ message: "Payment not updated" });
-    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error processing callback", error });
   }
 };
 
