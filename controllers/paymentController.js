@@ -25,6 +25,7 @@ const debitMobileWallet = async (req, res) => {
     return res.status(400).json({ message: "Team not found" });
   }
 
+  // data to be sent to zeepay API
   const debitData = {
     customerName,
     mno,
@@ -35,6 +36,7 @@ const debitMobileWallet = async (req, res) => {
     callback_url: process.env.CALLBACK_URL,
   };
 
+  // data to be saved as a document in the database
   const paymentData = {
     customerName,
     mno,
