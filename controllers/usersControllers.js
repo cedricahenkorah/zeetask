@@ -120,7 +120,7 @@ const createAdmin = async (req, res) => {
     });
 
     // send mail confirming account creation
-    accountCreatedMail(firstName, email, username);
+    accountCreatedMail(firstName, username, email);
 
     res.status(201).json({
       message: "Admin created succesfully and logged in",
