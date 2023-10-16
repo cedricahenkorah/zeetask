@@ -65,6 +65,7 @@ const debitMobileWallet = async (req, res) => {
 
 const callback = async (req, res) => {
   const { zeepay_id, reference, status, code, message, gateway_id } = req.body;
+  console.log(req.body);
 
   // check if all the fields are provided
   if (!zeepay_id || !reference || !status || !code || !message || !gateway_id) {
@@ -72,10 +73,10 @@ const callback = async (req, res) => {
   }
 
   // check if the zeepay id (payment id) exists
-  const payment = await Payment.findById(zeepay_id);
+  const payment = await Payment.findOne({ zeepay_id });
 
   if (!payment) {
-    return res.status(400).json({ message: "Payment not found" });
+    return res.status(404).json({ message: "Payment not found" });
   }
 
   // check the status of the payment and update the payment status in the database
@@ -85,6 +86,7 @@ const callback = async (req, res) => {
 
     // update the payment status in the database
     const updatedPayment = await payment.save();
+    console.log("updated payment", updatedPayment);
 
     if (updatedPayment) {
       // update the team's subscription status to true
@@ -102,6 +104,7 @@ const callback = async (req, res) => {
 
     // update the payment status in the database
     const updatedPayment = await payment.save();
+    console.log("updated payment", updatedPayment);
 
     if (updatedPayment) {
       res
