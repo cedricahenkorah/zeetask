@@ -86,10 +86,10 @@ const callback = async (req, res) => {
     console.log("Found payment: ", payment);
 
     // check the status of the payment and update the payment status in the database
-    if (status === "success" && code === 200) {
+    if (status === "Success" && code === 200) {
       // if payment is successful
       payment.paymentStatus = "success";
-    } else if (status === "failed") {
+    } else {
       // if payment failed
       payment.paymentStatus = "failed";
     }
