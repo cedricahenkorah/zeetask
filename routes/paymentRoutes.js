@@ -1,6 +1,9 @@
 const express = require("express");
 const verifyJWT = require("../middleware/verifyJWT");
-const { debitMobileWallet } = require("../controllers/paymentController");
+const {
+  debitMobileWallet,
+  callback,
+} = require("../controllers/paymentController");
 
 const router = express.Router();
 
@@ -11,6 +14,6 @@ const router = express.Router();
 router.post("/debit-mobile-wallet", debitMobileWallet);
 
 // callback url for zeepay API
-router.post("/callback");
+router.post("/callback", callback);
 
 module.exports = router;
