@@ -93,39 +93,39 @@ const createAdmin = async (req, res) => {
   if (admin) {
     // login
     // create new access token
-    const accessToken = jwt.sign(
-      {
-        userInfo: {
-          username: username,
-          email: email,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1hr" }
-    );
+    // const accessToken = jwt.sign(
+    //   {
+    //     userInfo: {
+    //       username: username,
+    //       email: email,
+    //     },
+    //   },
+    //   process.env.ACCESS_TOKEN_SECRET,
+    //   { expiresIn: "1hr" }
+    // );
 
     // create refresh token
-    const refreshToken = jwt.sign(
-      { username: username },
-      process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "3d" }
-    );
+    // const refreshToken = jwt.sign(
+    //   { username: username },
+    //   process.env.REFRESH_TOKEN_SECRET,
+    //   { expiresIn: "3d" }
+    // );
 
     // create secure cookie with refresh token
-    res.cookie("jwt", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      maxAge: 3 * 24 * 60 * 60 * 1000,
-    });
+    // res.cookie("jwt", refreshToken, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    //   maxAge: 3 * 24 * 60 * 60 * 1000,
+    // });
 
     // send mail confirming account creation
     accountCreatedMail(firstName, username, email);
 
     res.status(201).json({
-      message: "Admin created succesfully and logged in",
+      message: "Admin created succesfully",
       admin,
-      accessToken,
+      // accessToken,
     });
   } else {
     res.status(400).json({
