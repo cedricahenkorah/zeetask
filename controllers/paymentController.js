@@ -6,10 +6,10 @@ const Team = require("../models/Team");
 const debitService = new PaymentService();
 
 const debitMobileWallet = async (req, res) => {
-  const { customerName, mno, amount, msisdn, teamId } = req.body;
+  const { customerName, mno, amount, msisdn, teamId, reference } = req.body;
 
   // check if all the fields are provided
-  if (!customerName || !mno || !amount || !msisdn || !teamId) {
+  if (!customerName || !mno || !amount || !msisdn || !teamId || !reference) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -31,7 +31,7 @@ const debitMobileWallet = async (req, res) => {
     mno,
     amount,
     msisdn,
-    reference: "",
+    reference,
     description: process.env.DEBIT_DESCRIPTION,
     callback_url: process.env.CALLBACK_URL,
   };
@@ -42,7 +42,7 @@ const debitMobileWallet = async (req, res) => {
     mno,
     amount,
     msisdn,
-    reference: "ref",
+    reference,
     description: process.env.DEBIT_DESCRIPTION,
     callback_url: process.env.CALLBACK_URL,
     teamId,
