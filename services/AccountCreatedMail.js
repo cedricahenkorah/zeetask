@@ -26,9 +26,9 @@ const AccountCreatedMail = (firstName, username, email) => {
   });
 
   const mailOptions = {
-    from: "ZeeTask",
+    from: process.env.EMAIL,
     to: email,
-    subject: "Successful Onboardin on ZeeTask",
+    subject: "Successful Onboarding on ZeeTask",
     html: mailContent(firstName, username, email),
   };
 
