@@ -14,7 +14,6 @@ const mailContent = (firstName, username, email) => `
 
 <p>Best regards,</p>
 <p>ZeeTask Team</p>
-
 `;
 
 const AccountCreatedMail = (firstName, username, email) => {
