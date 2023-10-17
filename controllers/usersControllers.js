@@ -44,6 +44,26 @@ const getUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+const getCurrentUser = async (req, res) => {
+  const accessToken = req.headers.authorization.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    const username = decoded.userInfo.username;
+
+    // find the user by their username
+    const user = await User.findOne({ username }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
 const createAdmin = async (req, res) => {
   const { firstName, lastName, email, password, username } = req.body;
 
@@ -452,6 +472,7 @@ const resetPassword = async (req, res) => {
 module.exports = {
   getUser,
   getAllUsers,
+  getCurrentUser,
   createUser,
   updateUser,
   deleteUser,
