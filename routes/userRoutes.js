@@ -4,6 +4,7 @@ const {
   getUser,
   getAllUsers,
   createUser,
+  getCurrentUser,
   updateUser,
   deleteUser,
   changePassword,
@@ -20,10 +21,13 @@ const router = express.Router();
 router.post("/create-admin", createAdmin);
 
 // verify jwt
-// router.use(verifyJWT);
+router.use(verifyJWT);
 
 // get all users
 router.get("/", getAllUsers);
+
+// get the current authenticated user
+router.get("/current-user", getCurrentUser);
 
 // get a single user
 router.get("/:id", getUser);
