@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const validator = require("validator");
 const accountCreatedMail = require("../services/AccountCreatedMail");
+const UserCreatedMail = require("../services/UserCreatedMail");
 const generateResetToken = require("../services/generateResetToken");
 const PasswordResetMail = require("../services/PasswordResetMail");
 const { login } = require("../controllers/authController");
@@ -139,7 +140,7 @@ const createAdmin = async (req, res) => {
 // @route POST /users/
 // @access Private
 const createUser = async (req, res) => {
-  const { firstName, lastName, email, password, username } = req.body;
+  const { firstName, lastName, email, password, username, adminId } = req.body;
 
   // check if all fields exist
   if (!firstName || !lastName || !email || !password || !username) {
@@ -170,10 +171,19 @@ const createUser = async (req, res) => {
     return res.status(409).json({ message: "Username already exists" });
   }
 
-  // retrieve admin first name and the team name
-  const adminUser = await User.findOne({ isAdmin: true }).exec();
-  const adminFirstName = adminUser.firstName;
-  const team = await Team.findById(adminUser.team).exec();
+  // retrieve admin with the adminId
+  const adminUser = await User.findById(adminId).exec();
+
+  // set the name of the admin
+  const adminName = adminUser.firstName + " " + adminUser.lastName;
+
+  // set the team id of the admin
+  const teamId = adminUser.team;
+
+  // find the team with the teamId
+  const team = await Team.findById(teamId).exec();
+
+  // set the team name
   const teamName = team.name;
 
   // generate salt and hash password
@@ -187,13 +197,14 @@ const createUser = async (req, res) => {
     email,
     password: hashedPassword,
     username,
+    team,
   });
 
   if (user) {
     res.status(201).json({ message: "User created succesfully" });
 
     // send mail confirming account creation
-    accountCreatedMail(firstName, email, username, teamName, adminFirstName);
+    UserCreatedMail(firstName, username, email, password, teamName, adminName);
   } else {
     res.status(400).json({
       message: "Invalid user data received, could not create the new user",
