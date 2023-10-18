@@ -174,6 +174,10 @@ const createUser = async (req, res) => {
   // retrieve admin with the adminId
   const adminUser = await User.findById(adminId).exec();
 
+  if (!adminUser) {
+    return res.status(404).json({ message: "No admin with that id" });
+  }
+
   // set the name of the admin
   const adminName = adminUser.firstName + " " + adminUser.lastName;
 
