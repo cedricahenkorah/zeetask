@@ -120,11 +120,6 @@ const createAdmin = async (req, res) => {
     //   maxAge: 3 * 24 * 60 * 60 * 1000,
     // });
 
-    // update the team members array
-    await Team.findByIdAndUpdate(admin.team, {
-      $push: { members: admin._id },
-    });
-
     // send mail confirming account creation
     accountCreatedMail(firstName, username, email);
 
