@@ -73,6 +73,11 @@ const createTeam = async (req, res) => {
     adminUser.team = team._id;
     await adminUser.save();
 
+    // Add the admin to the team's members array
+    await Team.findByIdAndUpdate(team._id, {
+      $push: { members: adminUser._id },
+    });
+
     res.status(201).json({ message: "Team created successfully", team });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
