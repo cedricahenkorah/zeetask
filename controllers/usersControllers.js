@@ -252,7 +252,7 @@ const updateUser = async (req, res) => {
     return res.status(400).json({ message: "No user with that id" });
   }
 
-  const { firstName, lastName, email, username } = req.body;
+  const { firstName, lastName, username } = req.body;
 
   // check if all fields exist
   if (!firstName || !lastName || !username) {
@@ -267,11 +267,11 @@ const updateUser = async (req, res) => {
   }
 
   // check if the username and email already exists
-  const emailExists = await User.findOne({ email }).lean().exec();
+  // const emailExists = await User.findOne({ email }).lean().exec();
 
-  if (emailExists && emailExists._id.toString() !== id) {
-    return res.status(409).json({ message: "Email already exists" });
-  }
+  // if (emailExists && emailExists._id.toString() !== id) {
+  //   return res.status(409).json({ message: "Email already exists" });
+  // }
 
   const usernameExists = await User.findOne({ username })
     .collation({ locale: "en", strength: 2 })
@@ -285,7 +285,7 @@ const updateUser = async (req, res) => {
   // update the user in the db
   user.firstName = firstName;
   user.lastName = lastName;
-  user.email = email;
+  // user.email = email;
   user.username = username;
 
   const updatedUser = await user.save();
