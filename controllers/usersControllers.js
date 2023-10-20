@@ -255,7 +255,7 @@ const updateUser = async (req, res) => {
   const { firstName, lastName, email, username } = req.body;
 
   // check if all fields exist
-  if (!firstName || !lastName || !email || !username) {
+  if (!firstName || !lastName || !username) {
     return res.status(400).json({ message: "All fields are required" });
   }
 

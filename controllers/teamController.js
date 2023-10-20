@@ -30,7 +30,6 @@ const getTeam = async (req, res) => {
   const team = await Team.findById(id)
     .populate("admin", "firstName lastName username")
     .populate("members", "firstName lastName username")
-    .populate("email")
     .lean();
 
   if (!team) {
