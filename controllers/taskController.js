@@ -88,15 +88,15 @@ const updateTask = async (req, res) => {
   const { assignedTo, title, description, dueDate, completed } = req.body;
 
   // check if all the fields exists
-  if (
-    !assignedTo ||
-    !title ||
-    !description ||
-    dueDate ||
-    typeof completed !== "boolean"
-  ) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
+  // if (
+  //   !assignedTo ||
+  //   !title ||
+  //   !description ||
+  //   dueDate ||
+  //   typeof completed !== "boolean"
+  // ) {
+  //   return res.status(400).json({ message: "All fields are required" });
+  // }
 
   // check if the task exist
   const task = await Task.findById(id).exec();
