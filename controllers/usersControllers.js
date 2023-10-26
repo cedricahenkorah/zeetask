@@ -12,9 +12,6 @@ const PasswordResetMail = require("../services/PasswordResetMail");
 const { login } = require("../controllers/authController");
 const jwt = require("jsonwebtoken");
 
-// @desc get all users
-// @route GET /users/
-// @access Private
 const getAllUsers = async (req, res) => {
   const users = await User.find().select("-password").sort({ createdAt: -1 });
 
@@ -26,9 +23,6 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(users);
 };
 
-// @desc get a single user
-// @route GET /users/:id
-// @access Private
 const getUser = async (req, res) => {
   const { id } = req.params;
 
@@ -136,9 +130,6 @@ const createAdmin = async (req, res) => {
   }
 };
 
-// @desc create a new user
-// @route POST /users/
-// @access Private
 const createUser = async (req, res) => {
   const { firstName, lastName, email, password, username, adminId } = req.body;
 
@@ -241,9 +232,6 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
-// @desc update a user
-// @route POST /users/:id
-// @access Private
 const updateUser = async (req, res) => {
   const { id } = req.params;
 
@@ -297,9 +285,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// @desc delete a user
-// @route DELETE /users/:id
-// @access Private
 const deleteUser = async (req, res) => {
   const { id } = req.params;
 
