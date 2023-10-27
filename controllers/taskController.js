@@ -145,4 +145,46 @@ const deleteTask = async (req, res) => {
   }
 };
 
-module.exports = { getAllTasks, getTask, createTask, updateTask, deleteTask };
+const markComplete = async (req, res) => {
+  const { id } = req.params;
+
+  // check if the task id is valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid task id" });
+  }
+
+  const { completed } = req.body;
+
+  if (typeof completed !== "boolean") {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  // check if the task exist
+  const task = await Task.findById(id).exec();
+
+  if (!task) {
+    return res.status(400).json({ message: "Task not found" });
+  }
+
+  // check the task as complete and update the db
+  task.completed = completed;
+
+  const updatedTask = await task.save();
+
+  if (updatedTask) {
+    res.status(200).json({ message: "Task marked as complete", updatedTask });
+  } else {
+    return res
+      .status(400)
+      .json({ message: "Task could not be marked as complete" });
+  }
+};
+
+module.exports = {
+  getAllTasks,
+  getTask,
+  createTask,
+  updateTask,
+  deleteTask,
+  markComplete,
+};
