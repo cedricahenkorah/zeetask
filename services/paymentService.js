@@ -27,7 +27,7 @@ class PaymentService {
       // log the response first ...
       console.log(response.data);
 
-      // check if the response is successful and update the status of the payment to "pending" and set the xeepay_id in the debitPayment
+      // check if the response is successful and update the status of the payment to "pending" and set the zeepay_id in the debitPayment
       if (response.data.code === 411) {
         // set the zeepay_id in the debitPayment to match the zeepay_id from the response
         debitPayment.zeepay_id = response.data.zeepay_id;
