@@ -6,6 +6,7 @@ const {
   createTask,
   updateTask,
   deleteTask,
+  markComplete,
 } = require("../controllers/taskController");
 
 const router = express.Router();
@@ -27,5 +28,8 @@ router.patch("/:id", updateTask);
 
 // delete a task
 router.delete("/:id", deleteTask);
+
+// mark task as complete
+router.patch("/markComplete/:id", markComplete);
 
 module.exports = router;
