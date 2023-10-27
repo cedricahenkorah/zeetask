@@ -140,13 +140,20 @@ const createUser = async (req, res) => {
 
   // validate email and password fields
   if (!validator.isEmail(email)) {
-    throw new Error("Invalid email");
+    // throw new Error("Invalid email");
+    return res.status(400).json({ message: "Invalid Email" });
   }
 
   if (!validator.isStrongPassword(password)) {
-    throw new Error(
-      "Password is not strong enough, must be at least 8 characters long, include at least one upppercase letter, one lowercase letter, one number and one special character (e.g., !, @, #, $, etc.)"
-    );
+    // throw new Error(
+    //   "Password is not strong enough, must be at least 8 characters long, include at least one upppercase letter, one lowercase letter, one number and one special character (e.g., !, @, #, $, etc.)"
+    // );
+    return res
+      .status(400)
+      .json({
+        message:
+          "Password is not strong enough, must be at least 8 characters long, include at least one upppercase letter, one lowercase letter, one number and one special character (e.g., !, @, #, $, etc.)",
+      });
   }
 
   // check if email and username already exists
